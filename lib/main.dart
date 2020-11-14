@@ -1,6 +1,6 @@
+import 'package:demo_search/widget/search_bar/floatingSearchBar.dart';
 import 'package:flutter/material.dart';
-
-import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   return runApp(MyApp());
@@ -58,56 +58,68 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        key: globalKey,
-        body: FloatingSearchBar(
-            pinned: true,
-            padding: EdgeInsets.only(top: 10.0),
-            controller: _controller,
-            drawer: Drawer(
-              child: Container(),
-            ),
-            trailing: CircleAvatar(
-              child: Text("S"),
-            ),
-            onChanged: searchOperation,
-            decoration: InputDecoration.collapsed(
-              hintText: "Search...",
-              hintStyle: Theme.of(context).textTheme.subtitle1
-            ),
-            children: [
-              Container(
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    new Flexible(
-                        child: searchResult.length != 0 ||
-                                _controller.text.isNotEmpty
-                            ? new ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: searchResult.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  String listData = searchResult[index];
-                                  return new ListTile(
-                                    title: new Text(listData.toString()),
-                                  );
-                                },
-                              )
-                            : new ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: _list.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  String listData = _list[index];
-                                  return new ListTile(
-                                    title: new Text(listData.toString()),
-                                  );
-                                },
-                              ))
-                  ],
-                ),
-              )
-            ]),
+      theme: ThemeData(),
+      home: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          // For Android.
+          statusBarIconBrightness: Brightness
+              .dark, // Use [light] for white status bar and [dark] for black status bar.
+          // For iOS.
+          statusBarBrightness: Brightness
+              .light, // Use [dark] for white status bar and [light] for black status bar.
+        ),
+        child: Scaffold(
+          key: globalKey,
+          body: FloatingSearchBar(
+              pinned: true,
+              padding: EdgeInsets.only(top: 10.0),
+              controller: _controller,
+              drawer: Drawer(
+                child: Container(),
+              ),
+              trailing: CircleAvatar(
+                child: Text("S"),
+              ),
+              onChanged: searchOperation,
+              decoration: InputDecoration.collapsed(
+                  hintText: "Search...",
+                  hintStyle: Theme.of(context).textTheme.subtitle1),
+              children: [
+                Container(
+                  child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      new Flexible(
+                          child: searchResult.length != 0 ||
+                                  _controller.text.isNotEmpty
+                              ? new ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: searchResult.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    String listData = searchResult[index];
+                                    return new ListTile(
+                                      title: new Text(listData.toString()),
+                                    );
+                                  },
+                                )
+                              : new ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: _list.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    String listData = _list[index];
+                                    return new ListTile(
+                                      title: new Text(listData.toString()),
+                                    );
+                                  },
+                                ))
+                    ],
+                  ),
+                )
+              ]),
+        ),
       ),
     );
   }
