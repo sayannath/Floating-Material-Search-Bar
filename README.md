@@ -1,4 +1,6 @@
-# demo_search
+# Search Bar Implemented in Flutter
+
+### Like Gmail, Google Photos etc.
 
 A new Flutter project.
 
